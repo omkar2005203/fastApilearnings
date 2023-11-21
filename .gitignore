@@ -1,0 +1,6 @@
+venv/
+env/
+test/
+fastapienv/
+.vscode/
+*.csv

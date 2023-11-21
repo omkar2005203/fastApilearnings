@@ -1,0 +1,9 @@
+command to start server 
+
+uvicorn books:app --reload
+
+books -> python file name
+
+app -> application
+
+--reload reload server automatically
