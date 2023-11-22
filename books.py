@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import Body,FastAPI
 
 
 app = FastAPI()
@@ -10,6 +10,9 @@ BOOKS = [
     {'title':'title three','author':'author three','category':'history'},
     {'title':'title four','author':'author four','category':'geography'}
 ]
+
+
+### GET API 
 
 @app.get("/")
 async def first_api():
@@ -40,7 +43,7 @@ async def read_books(book_title: str):
         print("this is not working !")
 
 
-
+# query and path parameters
 @app.get("/books/{author_name}/")
 async def read_cat_auth(author_name: str,category: str):
     data = []
@@ -49,3 +52,57 @@ async def read_cat_auth(author_name: str,category: str):
             data.append(book)
 
         return data
+
+## QUERY parameter example
+@app.get("/books/")
+async def read_book(category: str):
+    data = []
+    for book in BOOKS:
+        if book.get('category').casefold() == category.casefold():
+            data.append(book)
+    return book
+
+#POST
+@app.post('/books/create_book')
+async def create_book(new_book = Body()):
+    BOOKS.append(new_book)
+
+
+@app.put("/books/update_book")
+async def update_book(updated_book = Body()):
+    for i in range(len(BOOKS)):
+        if BOOKS[i].get('title').casefold() == updated_book.get('title').casefold():
+            BOOKS[i] = updated_book
+
+
+@app.delete("/books/delete_book/{book_title}")
+async def delete_book(book_title : str):
+    for i in range(len(BOOKS)):
+        if BOOKS[i].get('title').casefold() == book_title.casefold():
+            BOOKS.pop(i)
+            break
+
+## Assignment -1 fetch books using author name 
+
+## using path parameter
+@app.get("/books_new/{author_name}")
+async def get_author(author_name :str):
+    data = []
+    for book in BOOKS:
+        if book.get('author').casefold() == author_name.casefold():
+            data.append(book)
+    return data
+
+
+## query parameter
+@app.get("/books_new")
+async def get_author(author: str):
+    data = []
+    for book in BOOKS:
+        if book.get('author').casefold() == author.casefold():
+            data.append(book)
+        
+    return data
+
+
+
