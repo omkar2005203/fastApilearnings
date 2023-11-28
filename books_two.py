@@ -29,7 +29,7 @@ class  BookRequest(BaseModel):
 
 
         
-BOOKS = [Book(1,'CS','omkar','A nice book',5),Book(2,'CS','omkar','A nice book',5),Book(3,'CS','omkar','A nice book',5)]
+BOOKS = [Book(1,'CS','omkar','A nice book',6),Book(2,'CS','omkar','A nice book',5),Book(3,'CS','omkar','A nice book',3)]
 
 @app.get("/books")
 async def read_all_books():
@@ -59,3 +59,17 @@ def find_book_id(book: Book):
         book.id = 1
 
     return book
+
+
+@app.get("/books/{book_id}")
+async def get_book(book_id: int):
+    for book in BOOKS:
+        if book.id == book_id:
+            return book
+        
+
+@app.get("/books/")
+async def get_book_rating(book_rating: int):
+    for book in BOOKS:
+        if book.rating == book_rating:
+            return book
